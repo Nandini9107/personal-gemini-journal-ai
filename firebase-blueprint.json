@@ -1,0 +1,136 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User profile and metadata",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "description": "User unique identifier"
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "User email address"
+        },
+        "displayName": {
+          "type": "string",
+          "description": "User display name"
+        },
+        "photoURL": {
+          "type": "string",
+          "description": "User avatar URL"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "ISO timestamp of user creation"
+        },
+        "lastLoginAt": {
+          "type": "string",
+          "description": "ISO timestamp of last login"
+        }
+      },
+      "required": ["uid", "email", "createdAt"]
+    },
+    "JournalEntry": {
+      "title": "JournalEntry",
+      "description": "A personal journal entry authored by the user with Gemini AI analysis",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique entry identifier"
+        },
+        "userId": {
+          "type": "string",
+          "description": "User ID of author"
+        },
+        "title": {
+          "type": "string",
+          "description": "Title of the journal entry",
+          "maxLength": 300
+        },
+        "content": {
+          "type": "string",
+          "description": "Body content of the journal entry",
+          "maxLength": 50000
+        },
+        "mood": {
+          "type": "string",
+          "description": "Primary detected or selected emotional mood",
+          "maxLength": 100
+        },
+        "themes": {
+          "type": "string",
+          "description": "Core themes identified in the entry as comma-delimited or tags"
+        },
+        "reflectionQuestions": {
+          "type": "string",
+          "description": "Three AI-generated reflection questions"
+        },
+        "aiSummary": {
+          "type": "string",
+          "description": "AI analysis summary of the entry",
+          "maxLength": 2000
+        },
+        "wordCount": {
+          "type": "number",
+          "description": "Total word count in the entry"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "ISO timestamp of creation"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "ISO timestamp of last update"
+        }
+      },
+      "required": ["id", "userId", "title", "content", "createdAt", "updatedAt"]
+    },
+    "ChatSession": {
+      "title": "ChatSession",
+      "description": "Gemini journaling brainstorm conversation session",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique chat session identifier"
+        },
+        "userId": {
+          "type": "string",
+          "description": "User ID of owner"
+        },
+        "title": {
+          "type": "string",
+          "description": "Session topic or preview title",
+          "maxLength": 200
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Creation timestamp"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Last update timestamp"
+        }
+      },
+      "required": ["id", "userId", "title", "createdAt", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "Private profile document for each user"
+    },
+    "/users/{userId}/entries/{entryId}": {
+      "schema": "JournalEntry",
+      "description": "Isolated journal entries belonging strictly to the user"
+    },
+    "/users/{userId}/chats/{chatId}": {
+      "schema": "ChatSession",
+      "description": "Isolated brainstorm chat sessions belonging strictly to the user"
+    }
+  }
+}
